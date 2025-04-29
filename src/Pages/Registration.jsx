@@ -1,12 +1,26 @@
-import React from "react";
+import React, { useContext } from "react";
+import { AuthContext } from "../Contexts/AuthContext";
 
 const Registration = () => {
+  const { handleRegister } = useContext(AuthContext);
+
+  console.log(handleRegister);
+
   const handleRegistration = (e) => {
     e.preventDefault();
     const email = e.target.email.value;
     const password = e.target.password.value;
 
-    console.log(email, password);
+    const regularExpression = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/;
+
+    if (!regularExpression.test(password)) {
+      console.log("password is not enough strong");
+      return;
+    }
+
+    handleRegister(email, password)
+      .then((result) => console.log(result.user))
+      .catch((err) => console.log(err));
   };
   return (
     <div>
