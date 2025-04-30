@@ -3,7 +3,7 @@ import { NavLink } from "react-router";
 import { AuthContext } from "../Contexts/AuthContext";
 
 const Header = () => {
-  const { signOutAuth } = use(AuthContext);
+  const { signOutAuth, user } = use(AuthContext);
 
   const logout = () => {
     signOutAuth().then(() => console.log("user Logged out"));
@@ -18,8 +18,22 @@ const Header = () => {
         <NavLink to={"/login"}>Login</NavLink>
       </li>
       <li>
-        <NavLink to={"registration"}>Registration</NavLink>
+        <NavLink to={"/registration"}>Registration</NavLink>
       </li>
+      <li>
+        <NavLink to={"/dashboard"}>Dashboard</NavLink>
+      </li>
+
+      {user && (
+        <>
+          <li>
+            <NavLink to={"/order"}>Order</NavLink>
+          </li>
+          <li>
+            <NavLink to={"/profile"}>Profile</NavLink>
+          </li>
+        </>
+      )}
     </>
   );
   return (
@@ -55,9 +69,12 @@ const Header = () => {
           <ul className="menu menu-horizontal px-1">{menu}</ul>
         </div>
         <div className="navbar-end">
-          <button onClick={logout} className="btn">
-            Logout
-          </button>
+          {user ? user.email : null}
+          {user && (
+            <button onClick={logout} className="btn">
+              Logout
+            </button>
+          )}
         </div>
       </div>
     </div>

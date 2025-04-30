@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { AuthContext } from "./AuthContext";
 import {
   createUserWithEmailAndPassword,
@@ -9,6 +9,9 @@ import {
 import { auth } from "../assets/Firebase/firebase";
 
 const AuthProvider = ({ children }) => {
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+
   const handleRegister = (email, password) => {
     return createUserWithEmailAndPassword(auth, email, password);
   };
@@ -17,9 +20,18 @@ const AuthProvider = ({ children }) => {
     return signInWithEmailAndPassword(auth, email, password);
   };
 
-  onAuthStateChanged(auth, (currentUser) => {
-    console.log(currentUser?.email);
-  });
+  const googleLogin = () => {};
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      setUser(currentUser);
+      console.log(currentUser);
+      setLoading(false);
+    });
+
+    return () => {
+      unsubscribe();
+    };
+  }, []);
 
   const signOutAuth = () => {
     return signOut(auth);
@@ -29,6 +41,9 @@ const AuthProvider = ({ children }) => {
     handleRegister,
     handleLogin,
     signOutAuth,
+    user,
+    loading,
+    googleLogin,
   };
 
   return (

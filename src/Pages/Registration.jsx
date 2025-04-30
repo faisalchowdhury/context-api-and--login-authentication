@@ -4,8 +4,6 @@ import { AuthContext } from "../Contexts/AuthContext";
 const Registration = () => {
   const { handleRegister } = useContext(AuthContext);
 
-  console.log(handleRegister);
-
   const handleRegistration = (e) => {
     e.preventDefault();
     const email = e.target.email.value;
