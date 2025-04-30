@@ -3,7 +3,7 @@ import { AuthContext } from "../Contexts/AuthContext";
 import { useLocation, useNavigate } from "react-router";
 
 const Login = () => {
-  const { handleLogin } = use(AuthContext);
+  const { handleLogin, googleLogin } = use(AuthContext);
   const navigate = useNavigate();
 
   const { state } = useLocation();
@@ -22,7 +22,14 @@ const Login = () => {
       .catch((err) => console.log(err));
   };
 
-  const handleGoogleLogin = () => {};
+  const handleGoogleLogin = () => {
+    googleLogin()
+      .then((result) => {
+        console.log(result.user);
+        navigate(state || "/");
+      })
+      .catch((err) => console.log(err));
+  };
 
   return (
     <div>
